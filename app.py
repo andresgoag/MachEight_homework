@@ -1,7 +1,5 @@
 import requests
 
-target = 139
-
 def get_players():
     req = requests.get('https://mach-eight.uc.r.appspot.com')
     if req.status_code == 200:
@@ -29,27 +27,25 @@ def append_pairs(player_name:str, partners: list, result: list):
             result.append(pair)
     return result
 
+def get_matching_pairs(target, players):
+    result = []
+    mapped_table = create_map(players)
+    for player in players:
+        player_name = get_name(player)
+        height = int(player['h_in'])
+        key = target - height
+        if key in mapped_table:
+            result = append_pairs(player_name, mapped_table[key], result)
+    return result
 
 def main():
-    results = []
+    target = 139
     players = get_players()
-
     if players:
-        mapped_table = create_map(players)
-
-        for player in players:
-            player_name = get_name(player)
-            height = int(player['h_in'])
-            key = target - height
-            if key in mapped_table:
-                results = append_pairs(player_name, mapped_table[key], results)
-
-        return results
-
-
+        result = get_matching_pairs(target, players)
+        return result
     else:
         return 'Error fetching source data'
-
 
 if __name__ == '__main__':
     print(main())
