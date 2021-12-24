@@ -1,6 +1,6 @@
 import unittest
 
-from app import (
+from libs import (
     get_players,
     get_name,
     create_map,

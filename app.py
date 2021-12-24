@@ -1,51 +1,31 @@
-import requests
+from flask import Flask, render_template
+from libs import get_players, get_matching_pairs
 
-def get_players():
-    req = requests.get('https://mach-eight.uc.r.appspot.com')
-    if req.status_code == 200:
-        return req.json()['values']
-    else:
-        return None
+def create_app():
+    app = Flask(__name__)
 
-def get_name(player: dict):
-    return f"{player['first_name']} {player['last_name']}"
-
-def create_map(players: list):
-    mapped = {}
-    for player in players:
-        height = int(player['h_in'])
-        if height in mapped.keys():
-            mapped[height].append(get_name(player))
+    @app.route('/matching_pairs/<int:target>')
+    def matching_pairs(target):
+        players = get_players()
+        if players:
+            result = get_matching_pairs(target, players)
+            result = list(map(list, result))
+            if result:
+                return {
+                    "pairs": result,
+                    "status": True,
+                    "message": "Ok"
+                }, 200
+            return {
+                "pairs": result,
+                "status": False,
+                "message": "No matches found"
+            }, 400
         else:
-            mapped[height] = [get_name(player)]
-    return mapped
+            return {
+                "pairs": None,
+                "status": False,
+                "message": "Error fetching source data"
+            }, 500
 
-def append_pairs(player_name:str, partners: list, result: list):
-    for partner in partners:
-        pair = {player_name, partner}
-        if pair not in result:
-            result.append(pair)
-    return result
-
-def get_matching_pairs(target, players):
-    result = []
-    mapped_table = create_map(players)
-    for player in players:
-        player_name = get_name(player)
-        height = int(player['h_in'])
-        key = target - height
-        if key in mapped_table:
-            result = append_pairs(player_name, mapped_table[key], result)
-    return result
-
-def main():
-    target = 139
-    players = get_players()
-    if players:
-        result = get_matching_pairs(target, players)
-        return result
-    else:
-        return 'Error fetching source data'
-
-if __name__ == '__main__':
-    print(main())
+    return app
