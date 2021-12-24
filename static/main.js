@@ -24,6 +24,8 @@ const displayCharacters = () => {
         if (page == 0) next_page.disabled = false;
     } else {
         actual_pairs = pairs;
+        next_page.disabled = true;
+        prev_page.disabled = true;
     }
     for (let pair of actual_pairs) {
         results_container.innerHTML += pairCard(pair);
@@ -59,6 +61,8 @@ const getPairs = () => {
             if (data.status) {
                 pairs = data.pairs;
                 page = 0;
+                prev_page.disabled = true;
+                next_page.disabled = true;
                 displayCharacters();
             } else {
                 results_container.innerHTML = `<p class="error-message">${data.message}</p>`;
