@@ -1,5 +1,6 @@
 let pairs = [];
 let page = 0;
+let max_pages = 0;
 const results_container = document.querySelector(".results")
 const input = document.querySelector(".input");
 const search_button = document.querySelector(".search-button");
@@ -20,8 +21,9 @@ const displayCharacters = () => {
     if (pairs.length > 10) {
         const lower = page*10
         const upper = lower + 10
-        actual_pairs = pairs.slice(lower, upper)
-        next_page.disabled = false;
+        actual_pairs = pairs.slice(lower, upper);
+        max_pages = Math.floor(pairs.length/10);
+        if (page == 0) next_page.disabled = false;
     } else {
         actual_pairs = pairs;
     }
@@ -37,6 +39,16 @@ const change_page = (e) => {
         (button.id == "next")
             ? page ++
             : page --
+        if (page == 0) {
+            prev_page.disabled = true;
+            next_page.disabled = false;
+        } else if (page == max_pages) {
+            prev_page.disabled = false;
+            next_page.disabled = true;
+        } else {
+            prev_page.disabled = false;
+            next_page.disabled = false;
+        }
         displayCharacters();
     }
 }
