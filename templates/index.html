@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA matching players height</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='main.css')}}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <main>
+        <figure>
+            <img src="{{url_for('static', filename='logo.png')}}" alt="">
+        </figure>
+        <h1>Get pairs of players by height</h1>
+        <p class="instructions">Input the desired sum of height to find your pairs of players</p>
+        <div class="form-group">
+            <input class="input" type="number" placeholder="Try: 139">
+            <button class="search-button">Search</button>
+        </div>
+        <div class="results"></div>
+        <div class="page_control">
+            <button id="prev" disabled>&lt</button>
+            <button id="next" disabled>&gt</button>
+        </div>
+    </main>
+
+    <script src="{{url_for('static', filename='main.js')}}"></script>
+</body>
+</html>
