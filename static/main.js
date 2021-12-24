@@ -1,7 +1,7 @@
 let pairs = [];
 let page = 0;
 let max_pages = 0;
-const results_container = document.querySelector(".results")
+const results_container = document.querySelector(".results");
 const input = document.querySelector(".input");
 const search_button = document.querySelector(".search-button");
 const next_page = document.querySelector("#next");
@@ -11,16 +11,14 @@ const pairCard = (pair) => `
     <div class="pair">
         <p>${pair[0]}</p>
         <p>${pair[1]}</p>
-    </div>`
+    </div>`;
 
 const displayCharacters = () => {
     results_container.innerHTML = "";
-    let page_buttons_html = ""
     let actual_pairs;
-
     if (pairs.length > 10) {
-        const lower = page*10
-        const upper = lower + 10
+        const lower = page*10;
+        const upper = lower + 10;
         actual_pairs = pairs.slice(lower, upper);
         max_pages = Math.floor(pairs.length/10);
         if (page == 0) next_page.disabled = false;
@@ -28,9 +26,8 @@ const displayCharacters = () => {
         actual_pairs = pairs;
     }
     for (let pair of actual_pairs) {
-        results_container.innerHTML += pairCard(pair)
+        results_container.innerHTML += pairCard(pair);
     }
-    results_container.innerHTML += page_buttons_html;
 }
 
 const change_page = (e) => {
@@ -38,7 +35,7 @@ const change_page = (e) => {
     if(!button.disabled) {
         (button.id == "next")
             ? page ++
-            : page --
+            : page --;
         if (page == 0) {
             prev_page.disabled = true;
             next_page.disabled = false;
@@ -64,14 +61,12 @@ const getPairs = () => {
                 page = 0;
                 displayCharacters();
             } else {
-                results_container.innerHTML = `<p class="error-message">${data.message}</p>`
+                results_container.innerHTML = `<p class="error-message">${data.message}</p>`;
             }
         })
-        .catch(error => console.error(error))
+        .catch(error => console.error(error));
 }
 
 search_button.addEventListener('click', getPairs);
-prev_page.addEventListener("click", change_page)
+prev_page.addEventListener("click", change_page);
 next_page.addEventListener("click", change_page);
-
-
